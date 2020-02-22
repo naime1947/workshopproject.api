@@ -48,6 +48,7 @@ namespace workshopproject.API
 
 
 
+            services.AddAuthentication();
             services.AddAutoMapper(typeof(AutoMapperHelperProfiles).Assembly);
             services.AddControllers();
             services.AddCors();
@@ -66,7 +67,7 @@ namespace workshopproject.API
             app.UseRouting();
 
             app.UseCors(x=> x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
