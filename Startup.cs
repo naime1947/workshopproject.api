@@ -16,6 +16,11 @@ using AutoMapper;
 using workshopproject.API.Helpers;
 using Microsoft.AspNetCore.Identity;
 using workshopproject.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using workshopproject.API.IRepositories;
+using workshopproject.API.Repositories;
 
 namespace workshopproject.API
 {
@@ -48,10 +53,19 @@ namespace workshopproject.API
 
 
 
-            services.AddAuthentication();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => {
+                option.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuerSigningKey = true, 
+                    ValidateIssuer = false,  
+            ValidateAudience = false,  
+            ValidateLifetime = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").Value))
+                };
+            });
             services.AddAutoMapper(typeof(AutoMapperHelperProfiles).Assembly);
             services.AddControllers();
             services.AddCors();
+            services.AddScoped<IUserRepository,UserRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

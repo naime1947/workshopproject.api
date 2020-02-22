@@ -42,9 +42,11 @@ namespace workshopproject.API.Controllers
         {
             User userToCreate = _mapper.Map<User>(user);
             var result = await _userManager.CreateAsync(userToCreate, user.Password);
+            var userToReturn = _mapper.Map<UserToReturn>(userToCreate);
 
             if(result.Succeeded){
-                return StatusCode(201);
+                return CreatedAtRoute("GetUser", new {
+                    Controller = "Users", id=userToCreate.Id}, userToReturn);
             }
 
             return BadRequest(result.Errors);
