@@ -9,6 +9,8 @@ namespace workshopproject.API.Helpers
         public AutoMapperHelperProfiles()
         {
             CreateMap<UserToRegisterDto,User>();
+            CreateMap<UserToLoginDto, User>();
+            CreateMap<User, UserToReturn>();
         }
     }
 }
